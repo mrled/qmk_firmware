@@ -38,11 +38,15 @@ enum custom_keycodes {
   HSV_229_102_255,
 };
 
+enum {
+ DANCE_COLON = 0,
+};
+
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   [0] = LAYOUT_ergodox_pretty(
     KC_EQUAL,       KC_1,           KC_2,           KC_3,           KC_4,           KC_5,           KC_ESCAPE,                                      KC_TRANSPARENT, KC_6,           KC_7,           KC_8,           KC_9,           KC_0,           KC_MINUS,
     KC_PGUP,        KC_Q,           KC_W,           KC_E,           KC_R,           KC_T,           KC_TAB,                                         TT(1),          KC_Y,           KC_U,           KC_I,           KC_O,           KC_P,           KC_BSLASH,
-    KC_PGDOWN,      KC_A,           KC_S,           KC_D,           KC_F,           KC_G,                                                                           KC_H,           KC_J,           KC_K,           KC_L,           LT(1,KC_SCOLON),KC_QUOTE,
+    KC_PGDOWN,      KC_A,           KC_S,           KC_D,           KC_F,           KC_G,                                                                           KC_H,           KC_J,           KC_K,           KC_L,           TD(DANCE_COLON),KC_QUOTE,
     KC_LSHIFT,      KC_Z,           KC_X,           KC_C,           KC_V,           KC_B,           KC_LGUI,                                        KC_RGUI,        KC_N,           KC_M,           KC_COMMA,       KC_DOT,         KC_SLASH,       KC_RSHIFT,
     KC_GRAVE,       KC_QUOTE,       TT(2),          KC_LEFT,        KC_RIGHT,                                                                                                       KC_UP,          KC_DOWN,        KC_LBRACKET,    KC_RBRACKET,    KC_TRANSPARENT,
                                                                                                     KC_LSPO,        KC_HYPR,        KC_MEH,         KC_RSPC,
@@ -248,3 +252,29 @@ uint32_t layer_state_set_user(uint32_t state) {
 void keyboard_post_init_user(void) {
   layer_state_set_user(layer_state);
 }
+
+
+/* The colon dance
+ * Tap the semicolon key for a semicolon (;), but double tap it for a colon (:)
+ */
+void dance_colon_finished (qk_tap_dance_state_t *state, void *user_data) {
+  if (state->count == 1) {
+    register_code (KC_SCLN);
+  } else {
+    register_code (KC_RSFT);
+    register_code (KC_SCLN);
+  }
+}
+void dance_colon_reset (qk_tap_dance_state_t *state, void *user_data) {
+  if (state->count == 1) {
+    unregister_code (KC_SCLN);
+  } else {
+    unregister_code (KC_RSFT);
+    unregister_code (KC_SCLN);
+  }
+}
+
+//All tap dance functions would go here. Only showing this one.
+qk_tap_dance_action_t tap_dance_actions[] = {
+ [DANCE_COLON] = ACTION_TAP_DANCE_FN_ADVANCED (NULL, dance_colon_finished, dance_colon_reset)
+};
