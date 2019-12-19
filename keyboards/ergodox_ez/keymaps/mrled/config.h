@@ -5,3 +5,4 @@
 #define ORYX_CONFIGURATOR
 #define TAPPING_TERM 200
 /* #define PERMISSIVE_HOLD */
+#define LEADER_TIMEOUT 300
