@@ -41,6 +41,9 @@ enum custom_keycodes {
 /* List of my tap dances */
 enum {
  DANCE_COLON = 0,
+ DANCE_QUOTE,
+ DANCE_UNDERSCORE,
+ DANCE_PLUS,
  DANCE_CTRLX,
  DANCE_LGUICURLY,
  DANCE_RGUICURLY,
@@ -104,9 +107,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                                                                                     KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT
   ),
   [LAYER_TESTING] = LAYOUT_ergodox_pretty(
+    TD(DANCE_PLUS), KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT,                                 KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, TD(DANCE_UNDERSCORE),
     KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT,                                 KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT,
-    KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT,                                 KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT,
-    KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT,                                                                 KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, TD(DANCE_COLON),KC_TRANSPARENT,
+    KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT,                                                                 KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, TD(DANCE_COLON),TD(DANCE_QUOTE),
     KC_TRANSPARENT, KC_TRANSPARENT, TD(DANCE_CTRLX),KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, TD(DANCE_LGUICURLY),                       TD(DANCE_RGUICURLY), KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT,
     KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT,                                                                                                 KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT,
                                                                                                     KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT,
@@ -311,6 +314,67 @@ void dance_colon_reset (qk_tap_dance_state_t *state, void *user_data) {
   }
 }
 
+/* The quote dance
+ * Tap the single quote key for a single quote ('), but double tap it for a double quote (")
+ */
+void dance_quote_finished (qk_tap_dance_state_t *state, void *user_data) {
+  if (state->count == 1) {
+    register_code (KC_QUOTE);
+  } else {
+    register_code (KC_RSFT);
+    register_code (KC_QUOTE);
+  }
+}
+void dance_quote_reset (qk_tap_dance_state_t *state, void *user_data) {
+  if (state->count == 1) {
+    unregister_code (KC_QUOTE);
+  } else {
+    unregister_code (KC_RSFT);
+    unregister_code (KC_QUOTE);
+  }
+}
+
+/* The underscore dance
+ * Tap the dash key for a dash (-), but double tap it for an underscore (_)
+ */
+void dance_underscore_finished (qk_tap_dance_state_t *state, void *user_data) {
+  if (state->count == 1) {
+    register_code (KC_MINUS);
+  } else {
+    register_code (KC_RSFT);
+    register_code (KC_MINUS);
+  }
+}
+void dance_underscore_reset (qk_tap_dance_state_t *state, void *user_data) {
+  if (state->count == 1) {
+    unregister_code (KC_MINUS);
+  } else {
+    unregister_code (KC_RSFT);
+    unregister_code (KC_MINUS);
+  }
+}
+
+/* The plus dance
+ * Tap the equals key for an equals sign (=), but double tap it for a plus (+)
+ */
+void dance_plus_finished (qk_tap_dance_state_t *state, void *user_data) {
+  if (state->count == 1) {
+    register_code (KC_EQUAL);
+  } else {
+    register_code (KC_RSFT);
+    register_code (KC_EQUAL);
+  }
+}
+void dance_plus_reset (qk_tap_dance_state_t *state, void *user_data) {
+  if (state->count == 1) {
+    unregister_code (KC_EQUAL);
+  } else {
+    unregister_code (KC_RSFT);
+    unregister_code (KC_EQUAL);
+  }
+}
+
+
 /* Enable multi function tap dance
  * See also <https://docs.qmk.fm/#/feature_tap_dance?id=example-4-39quad-function-tap-dance39>
  */
@@ -479,6 +543,9 @@ void dance_rguicurly_reset(qk_tap_dance_state_t *state, void *user_data) {
 //All tap dance functions would go here. Only showing this one.
 qk_tap_dance_action_t tap_dance_actions[] = {
     [DANCE_COLON] = ACTION_TAP_DANCE_FN_ADVANCED (NULL, dance_colon_finished, dance_colon_reset),
+    [DANCE_QUOTE] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, dance_quote_finished, dance_quote_reset),
+    [DANCE_UNDERSCORE] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, dance_underscore_finished, dance_underscore_reset),
+    [DANCE_PLUS] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, dance_plus_finished, dance_plus_reset),
     [DANCE_CTRLX] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, dance_ctrlx_finished, dance_ctrlx_reset),
     [DANCE_LGUICURLY] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, dance_lguicurly_finished, dance_lguicurly_reset),
     [DANCE_RGUICURLY] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, dance_rguicurly_finished, dance_rguicurly_reset),
