@@ -44,6 +44,7 @@ enum {
  DANCE_CTRLX,
  DANCE_LGUICURLY,
  DANCE_RGUICURLY,
+ DANCE_CTRLALT,
 };
 
 /* Used in the cur_dance function to hold state */
@@ -110,7 +111,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT,                                                                                                 KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT,
                                                                                                     KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT,
                                                                                                                     KC_TRANSPARENT, KC_TRANSPARENT,
-                                                                                    KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT
+                                                                                 KC_TRANSPARENT, KC_TRANSPARENT, TD(DANCE_CTRLALT), TD(DANCE_CTRLALT), KC_TRANSPARENT, KC_TRANSPARENT
   ),
   /*
   [LAYER_TRANSPARENT_TEMPLATE] = LAYOUT_ergodox_pretty(
@@ -380,6 +381,7 @@ int spacecadet_dance(qk_tap_dance_state_t *state) {
 static dancestep dance_lguicurly = { .is_press_action=true, .state=0 };
 static dancestep dance_rguicurly = { .is_press_action=true, .state=0 };
 static dancestep dance_ctrlx = { .is_press_action=true, .state=0 };
+static dancestep dance_ctrlalt = { .is_press_action=true, .state=0 };
 
 /* The ctrl-x dance
  * See also https://docs.qmk.fm/#/feature_tap_dance?id=example-4-39quad-function-tap-dance39
@@ -411,6 +413,29 @@ void dance_ctrlx_reset(qk_tap_dance_state_t *state, void *user_data) {
   case DOUBLE_SINGLE_TAP: unregister_code(KC_X); break;
   }
   dance_ctrlx.state = 0;
+}
+
+
+/* The ctrl-alt dance
+ * ctrl if tapped/held; alt if double-tapped/double-held
+ */
+void dance_ctrlalt_finished(qk_tap_dance_state_t *state, void *user_data) {
+  dance_ctrlalt.state = current_dance(state);
+  switch (dance_ctrlalt.state) {
+  case SINGLE_TAP: register_code(KC_LCTRL); break;
+  case SINGLE_HOLD: register_code(KC_LCTRL); break;
+  case DOUBLE_TAP: register_code(KC_LALT); break;
+  case DOUBLE_HOLD: register_code(KC_LALT); break;
+  }
+}
+void dance_ctrlalt_reset(qk_tap_dance_state_t *state, void *user_data) {
+  switch (dance_ctrlalt.state) {
+  case SINGLE_TAP: unregister_code(KC_LCTRL); break;
+  case SINGLE_HOLD: unregister_code(KC_LCTRL); break;
+  case DOUBLE_TAP: unregister_code(KC_LALT); break;
+  case DOUBLE_HOLD: unregister_code(KC_LALT); break;
+  }
+  dance_ctrlalt.state = 0;
 }
 
 
@@ -457,11 +482,13 @@ qk_tap_dance_action_t tap_dance_actions[] = {
     [DANCE_CTRLX] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, dance_ctrlx_finished, dance_ctrlx_reset),
     [DANCE_LGUICURLY] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, dance_lguicurly_finished, dance_lguicurly_reset),
     [DANCE_RGUICURLY] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, dance_rguicurly_finished, dance_rguicurly_reset),
+    [DANCE_CTRLALT] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, dance_ctrlalt_finished, dance_ctrlalt_reset),
 };
 
 
 
 /* The LEADER key for macros
+ * This key works like emacs C-x prefix - you hit this key, and it supports key sequences you type next
  */
 LEADER_EXTERNS();
 
@@ -469,10 +496,12 @@ void matrix_scan_user(void) {
   LEADER_DICTIONARY() {
     leading = false;
     leader_end();
-    SEQ_TWO_KEYS(KC_C, KC_L) {
+    SEQ_TWO_KEYS(KC_C, KC_X) {
       tap_code(KC_CAPSLOCK);
     }
-    /*
+
+    /* LEADER examples:
+
     SEQ_ONE_KEY(KC_F) {
       // Anything you can do in a macro.
       SEND_STRING("QMK is awesome.");
@@ -490,5 +519,6 @@ void matrix_scan_user(void) {
       unregister_code(KC_LGUI);
     }
     */
+
   }
 }
