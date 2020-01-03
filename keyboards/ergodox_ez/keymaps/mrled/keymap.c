@@ -72,6 +72,7 @@ enum {
     LAYER_BASE = 0,
     LAYER_TESTING = 4,
     LAYER_MOUSE = 5,
+    LAYER_THREEROW = 3,
     LAYER_MEDIACOLOR = 8,
 };
 
@@ -84,7 +85,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     KC_GRAVE,       KC_QUOTE,       TT(LAYER_MEDIACOLOR),KC_LEFT,   KC_RIGHT,                                                                                                       KC_UP,          KC_DOWN,        KC_LBRACKET,    KC_RBRACKET,    TT(LAYER_TESTING),
                                                                                                     KC_LSPO,        KC_HYPR,        KC_MEH,         KC_RSPC,
                                                                                                                     KC_LALT,        KC_LALT,
-                                                                                    KC_SPACE,       KC_BSPACE,      KC_LCTRL,       KC_RCTRL,       KC_ENTER,       KC_SPACE
+                                                                                    KC_LSHIFT,      KC_BSPACE,      KC_LCTRL,       KC_RCTRL,       KC_ENTER,       KC_SPACE
   ),
   [LAYER_MOUSE] = LAYOUT_ergodox_pretty(
     KC_ESCAPE,      KC_F1,          KC_F2,          KC_F3,          KC_F4,          KC_F5,          KC_HOME,                                        KC_END,         KC_F6,          KC_F7,          KC_F8,          KC_F9,          KC_F10,         KC_F11,
@@ -117,6 +118,24 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                                                                                  KC_TRANSPARENT, KC_TRANSPARENT, TD(DANCE_CTRLALT), TD(DANCE_CTRLALT), KC_TRANSPARENT, KC_TRANSPARENT
   ),
   /*
+  // A gergodox-like layout, for experimentation
+  [LAYER_THREEROW] = LAYOUT_ergodox_pretty(
+    // Skip first column - 1.5u keys
+    // Skip last column - 1.5u keys
+    // Skip first row - numbers etc
+    KC_NO,          KC_NO,          KC_NO,          KC_NO,          KC_NO,          KC_NO,          KC_NO,                                          KC_NO,          KC_NO,          KC_NO,          KC_NO,          KC_NO,          KC_NO,          KC_NO,
+    KC_NO,          KC_Q,           KC_W,           KC_E,           KC_R,           KC_T,           KC_TAB,                                         TT(LAYER_MOUSE),KC_Y,           KC_U,           KC_I,           KC_O,           KC_P,           KC_NO,
+    KC_NO,          KC_A,           KC_S,           KC_D,           KC_F,           KC_G,                                                                           KC_H,           KC_J,           KC_K,           KC_L,           TD(DANCE_COLON),KC_NO,
+    KC_NO,          KC_Z,           KC_X,           KC_C,           KC_V,           KC_B,           KC_LGUI,                                        KC_RGUI,        KC_N,           KC_M,           KC_COMMA,       KC_DOT,         KC_SLASH,       KC_NO,
+    // Skip last row - ergodox arrow keys etc
+    KC_NO,          KC_NO,          KC_NO,          KC_NO,          KC_NO,                                                                                                          KC_NO,          KC_NO,          KC_NO,          KC_NO,          KC_NO,
+    // In thumb clusters, only use bottom row
+                                                                                                    KC_NO,          KC_NO,          KC_NO,          KC_NO,
+                                                                                                                    KC_NO,          KC_NO,
+                                                                                    KC_NO,          KC_NO,          KC_NO,          KC_NO,          KC_NO,          KC_NO
+  ),
+  */
+  /*
   [LAYER_TRANSPARENT_TEMPLATE] = LAYOUT_ergodox_pretty(
     KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT,                                 KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT,
     KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT,                                 KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT,
@@ -126,6 +145,16 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                                                                                                     KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT,
                                                                                                                     KC_TRANSPARENT, KC_TRANSPARENT,
                                                                                     KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT
+  ),
+   [LAYER_NO_TEMPLATE] = LAYOUT_ergodox_pretty(
+    KC_NO,          KC_NO,          KC_NO,          KC_NO,          KC_NO,          KC_NO,          KC_NO,                                          KC_NO,          KC_NO,          KC_NO,          KC_NO,          KC_NO,          KC_NO,          KC_NO,
+    KC_NO,          KC_NO,          KC_NO,          KC_NO,          KC_NO,          KC_NO,          KC_NO,                                          KC_NO,          KC_NO,          KC_NO,          KC_NO,          KC_NO,          KC_NO,          KC_NO,
+    KC_NO,          KC_NO,          KC_NO,          KC_NO,          KC_NO,          KC_NO,                                                                          KC_NO,          KC_NO,          KC_NO,          KC_NO,          KC_NO,          KC_NO,
+    KC_NO,          KC_NO,          KC_NO,          KC_NO,          KC_NO,          KC_NO,          KC_NO,                                          KC_NO,          KC_NO,          KC_NO,          KC_NO,          KC_NO,          KC_NO,          KC_NO,
+    KC_NO,          KC_NO,          KC_NO,          KC_NO,          KC_NO,                                                                                                          KC_NO,          KC_NO,          KC_NO,          KC_NO,          KC_NO,
+                                                                                                    KC_NO,          KC_NO,          KC_NO,          KC_NO,
+                                                                                                                    KC_NO,          KC_NO,
+                                                                                    KC_NO,          KC_NO,          KC_NO,          KC_NO,          KC_NO,          KC_NO
   ),
   */
 };
@@ -299,18 +328,19 @@ void keyboard_post_init_user(void) {
  */
 void dance_colon_finished (qk_tap_dance_state_t *state, void *user_data) {
   if (state->count == 1) {
-    register_code (KC_SCLN);
+    register_code(KC_SCLN);
   } else {
-    register_code (KC_RSFT);
-    register_code (KC_SCLN);
+    register_code(KC_RSFT);
+    register_code(KC_SCLN);
+    unregister_code(KC_RSFT);
   }
 }
 void dance_colon_reset (qk_tap_dance_state_t *state, void *user_data) {
   if (state->count == 1) {
-    unregister_code (KC_SCLN);
+    unregister_code(KC_SCLN);
   } else {
-    unregister_code (KC_RSFT);
-    unregister_code (KC_SCLN);
+    unregister_code(KC_SCLN);
+    unregister_code(KC_RSFT);
   }
 }
 
@@ -319,18 +349,19 @@ void dance_colon_reset (qk_tap_dance_state_t *state, void *user_data) {
  */
 void dance_quote_finished (qk_tap_dance_state_t *state, void *user_data) {
   if (state->count == 1) {
-    register_code (KC_QUOTE);
+    register_code(KC_QUOTE);
   } else {
-    register_code (KC_RSFT);
-    register_code (KC_QUOTE);
+    register_code(KC_RSFT);
+    register_code(KC_QUOTE);
+    unregister_code(KC_RSFT);
   }
 }
 void dance_quote_reset (qk_tap_dance_state_t *state, void *user_data) {
   if (state->count == 1) {
-    unregister_code (KC_QUOTE);
+    unregister_code(KC_QUOTE);
   } else {
-    unregister_code (KC_RSFT);
-    unregister_code (KC_QUOTE);
+    unregister_code(KC_RSFT);
+    unregister_code(KC_QUOTE);
   }
 }
 
@@ -339,18 +370,19 @@ void dance_quote_reset (qk_tap_dance_state_t *state, void *user_data) {
  */
 void dance_underscore_finished (qk_tap_dance_state_t *state, void *user_data) {
   if (state->count == 1) {
-    register_code (KC_MINUS);
+    register_code(KC_MINUS);
   } else {
-    register_code (KC_RSFT);
-    register_code (KC_MINUS);
+    register_code(KC_RSFT);
+    register_code(KC_MINUS);
+    unregister_code(KC_RSFT);
   }
 }
 void dance_underscore_reset (qk_tap_dance_state_t *state, void *user_data) {
   if (state->count == 1) {
-    unregister_code (KC_MINUS);
+    unregister_code(KC_MINUS);
   } else {
-    unregister_code (KC_RSFT);
-    unregister_code (KC_MINUS);
+    unregister_code(KC_RSFT);
+    unregister_code(KC_MINUS);
   }
 }
 
@@ -359,18 +391,19 @@ void dance_underscore_reset (qk_tap_dance_state_t *state, void *user_data) {
  */
 void dance_plus_finished (qk_tap_dance_state_t *state, void *user_data) {
   if (state->count == 1) {
-    register_code (KC_EQUAL);
+    register_code(KC_EQUAL);
   } else {
-    register_code (KC_RSFT);
-    register_code (KC_EQUAL);
+    register_code(KC_RSFT);
+    register_code(KC_EQUAL);
+    unregister_code(KC_RSFT);
   }
 }
 void dance_plus_reset (qk_tap_dance_state_t *state, void *user_data) {
   if (state->count == 1) {
-    unregister_code (KC_EQUAL);
+    unregister_code(KC_EQUAL);
   } else {
-    unregister_code (KC_RSFT);
-    unregister_code (KC_EQUAL);
+    unregister_code(KC_RSFT);
+    unregister_code(KC_EQUAL);
   }
 }
 
