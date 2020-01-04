@@ -118,7 +118,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                                                                                  KC_TRANSPARENT, KC_TRANSPARENT, TD(DANCE_CTRLALT), TD(DANCE_CTRLALT), KC_TRANSPARENT, KC_TRANSPARENT
   ),
   /*
-  // A gergodox-like layout, for experimentation
+  // A gergoplex-like layout, for experimentation
+  // See the default gergoplex layout here:
+  // https://github.com/germ/qmk_firmware/blob/gboards-update/keyboards/gergoplex/keymaps/default/keymap.c
   [LAYER_THREEROW] = LAYOUT_ergodox_pretty(
     // Skip first column - 1.5u keys
     // Skip last column - 1.5u keys
