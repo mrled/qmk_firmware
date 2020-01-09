@@ -27,15 +27,15 @@
 
 enum custom_keycodes {
   RGB_SLD = EZ_SAFE_RANGE,
-  HSV_0_255_255,
-  HSV_86_255_128,
-  HSV_125_255_255,
-  HSV_215_115_238,
-  HSV_172_255_255,
-  HSV_43_255_255,
-  HSV_196_255_130,
-  HSV_27_255_255,
-  HSV_229_102_255,
+  BL_RED,
+  BL_GREEN,
+  BL_CYAN,
+  BL_VIOLET,
+  BL_BLUE,
+  BL_YELLOW,
+  BL_INDIGO,
+  BL_ORANGE,
+  BL_PINK,
 };
 
 /* List of my tap dances */
@@ -70,52 +70,79 @@ enum {
 /* List all my layers by name */
 enum {
     LAYER_BASE = 0,
-    LAYER_TESTING = 4,
-    LAYER_MOUSE = 5,
-    LAYER_THREEROW = 3,
-    LAYER_MEDIACOLOR = 8,
+    LAYER_FUNC = 1,
+    LAYER_MEDIA = 2,
+    LAYER_COLOR = 3,
+    LAYER_TEST = 4,
+    //LAYER_THREEROW = 5,
+    LAYER_MOUSE = 7,
 };
 
+/* Layer Layout
+ * Layers 1-6 are selected in the bottom row, skipping the arrow keys
+ * Layers 7+ might be selected via other keys, e.g. my mouse layer next to KC_Y
+ * Take special care to only allow entering non-base layers from the base layer
+ */
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   [LAYER_BASE] = LAYOUT_ergodox_pretty(
     KC_EQUAL,       KC_1,           KC_2,           KC_3,           KC_4,           KC_5,           KC_ESCAPE,                                      KC_LEAD,        KC_6,           KC_7,           KC_8,           KC_9,           KC_0,           KC_MINUS,
-    KC_PGUP,        KC_Q,           KC_W,           KC_E,           KC_R,           KC_T,           KC_TAB,                                         TT(LAYER_MOUSE),KC_Y,           KC_U,           KC_I,           KC_O,           KC_P,           KC_BSLASH,
-    KC_PGDOWN,      KC_A,           KC_S,           KC_D,           KC_F,           KC_G,                                                                           KC_H,           KC_J,           KC_K,           KC_L,           KC_SCLN,        KC_QUOTE,
+    KC_GRAVE,       KC_Q,           KC_W,           KC_E,           KC_R,           KC_T,           KC_TAB,                                         TT(LAYER_MOUSE),KC_Y,           KC_U,           KC_I,           KC_O,           KC_P,           KC_BSLASH,
+    KC_NO,          KC_A,           KC_S,           KC_D,           KC_F,           KC_G,                                                                           KC_H,           KC_J,           KC_K,           KC_L,           KC_SCLN,        KC_QUOTE,
     KC_LBRACKET,    KC_Z,           KC_X,           KC_C,           KC_V,           KC_B,           KC_LGUI,                                        KC_RGUI,        KC_N,           KC_M,           KC_COMMA,       KC_DOT,         KC_SLASH,       KC_RBRACKET,
-    KC_GRAVE,       KC_NO,          TT(LAYER_MEDIACOLOR),KC_LEFT,   KC_RIGHT,                                                                                                       KC_UP,          KC_DOWN,        KC_LBRACKET,    KC_RBRACKET,    TT(LAYER_TESTING),
-                                                                                                    KC_LSPO,        KC_HYPR,        KC_MEH,         KC_RSPC,
-                                                                                                                    KC_NO,          KC_NO,
+    TT(LAYER_FUNC),TT(LAYER_MEDIA), TT(LAYER_COLOR),KC_LEFT,        KC_RIGHT,                                                                                                       KC_UP,          KC_DOWN,        TT(LAYER_TEST), KC_NO,          KC_NO,
+                                                                                                    KC_LSPO,        KC_PGUP,        KC_HOME,        KC_RSPC,
+                                                                                                                    KC_PGDOWN,      KC_END,
                                                                                     KC_LSHIFT,      KC_BSPACE,      KC_LCTRL,       KC_LALT,        KC_ENTER,       KC_SPACE
+  ),
+  [LAYER_FUNC] = LAYOUT_ergodox_pretty(
+    KC_NO,          KC_F1,          KC_F2,          KC_F3,          KC_F4,          KC_F5,          KC_TRANSPARENT,                                 KC_NO,          KC_F6,          KC_F7,          KC_F8,          KC_F9,          KC_F10,         KC_DELETE,
+    KC_NO,          KC_F11,         KC_F12,         KC_F13,         KC_F14,         KC_F15,         KC_TRANSPARENT,                                 KC_NO,          KC_F16,         KC_F17,         KC_F18,         KC_F19,         KC_F20,         KC_INSERT,
+    KC_NO,          KC_NO,          KC_NO,          KC_NO,          KC_NO,          KC_NO,                                                                          KC_NO,          KC_NO,          KC_NO,          KC_NO,          KC_NO,          KC_PAUSE,
+    KC_APPLICATION, KC_NO,          KC_NO,          KC_NO,          KC_NO,          KC_NO,          KC_TRANSPARENT,                                 KC_TRANSPARENT, KC_NO,          KC_NO,          KC_NO,          KC_NO,          KC_NO,          KC_PSCREEN,
+    KC_TRANSPARENT, KC_NO,          KC_NO,          KC_TRANSPARENT, KC_TRANSPARENT,                                                                                                 KC_TRANSPARENT, KC_TRANSPARENT, KC_NO,          KC_NO,          KC_NO,
+                                                                                                    KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT,
+                                                                                                                    KC_TRANSPARENT, KC_TRANSPARENT,
+                                                                                    KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT
+  ),
+ [LAYER_MEDIA] = LAYOUT_ergodox_pretty(
+    KC_PWR,         KC_BRID,        KC_BRIU,        KC_NO,          KC_NO,          KC_NO,          KC_NO,                                          KC_NO,          KC_NO,          KC_NO,          KC_MUTE,        KC_VOLD,        KC_VOLU,        KC_MEDIA_EJECT,
+    KC_NO,          KC_NO,          KC_NO,          KC_NO,          KC_NO,          KC_NO,          KC_NO,                                          KC_NO,          KC_NO,          KC_NO,          KC_NO,          KC_NO,          KC_NO,          KC_NO,
+    KC_NO,          KC_NO,          KC_NO,          KC_NO,          KC_NO,          KC_NO,                                                                          KC_NO,          KC_NO,          KC_NO,          KC_NO,          KC_NO,          KC_NO,
+    KC_NO,          KC_NO,          KC_NO,          KC_NO,          KC_NO,          KC_NO,          KC_NO,                                          KC_NO,          KC_NO,          KC_NO,          KC_NO,          KC_NO,          KC_NO,          KC_NO,
+    KC_NO,          KC_TRANSPARENT, KC_NO,          KC_NO,          KC_NO,                                                                                                          KC_NO,          KC_NO,          KC_NO,          KC_NO,          KC_NO,
+                                                                                                    KC_NO,          KC_NO,          KC_NO,          KC_NO,
+                                                                                                                    KC_NO,          KC_NO,
+                                                                                    KC_MPLY,        KC_NO,          KC_NO,          KC_NO,          KC_MPRV,        KC_MNXT
+  ),
+  [LAYER_COLOR] = LAYOUT_ergodox_pretty(
+    KC_NO,          KC_NO,          KC_NO,          KC_NO,          KC_NO,          KC_NO,          KC_NO,                                          KC_NO,          KC_NO,          KC_NO,          KC_NO,          KC_NO,          KC_NO,          KC_NO,
+    KC_NO,          KC_NO,          KC_NO,          KC_NO,          BL_RED,         KC_NO,          KC_NO,                                          KC_NO,          BL_YELLOW,      KC_NO,          BL_INDIGO,      BL_ORANGE,      BL_PINK,        KC_NO,
+    KC_NO,          KC_NO,          KC_NO,          KC_NO,          KC_NO,          BL_GREEN,                                                                       KC_NO,          KC_NO,          KC_NO,          KC_NO,          KC_NO,          KC_NO,
+    KC_NO,          KC_NO,          KC_NO,          BL_CYAN,        BL_VIOLET,      BL_BLUE,        KC_NO,                                          KC_NO,          KC_NO,          KC_NO,          KC_NO,          KC_NO,          KC_NO,          KC_NO,
+    KC_NO,          KC_NO,          KC_TRANSPARENT, RGB_HUD,        RGB_HUI,                                                                                                        RGB_VAI,        RGB_VAD,        KC_NO,          KC_NO,          KC_NO,
+                                                                                                    RGB_MOD,        KC_NO,          RGB_TOG,        RGB_SLD,
+                                                                                                                    KC_NO,          KC_NO,
+                                                                                    KC_NO,          KC_NO,          KC_NO,          KC_NO,          KC_NO,          KC_NO
+  ),
+  [LAYER_TEST] = LAYOUT_ergodox_pretty(
+    TD(DANCE_PLUS), KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT,                                 KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, TD(DANCE_UNDERSCORE),
+    KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT,                                 KC_NO,          KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT,
+    KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT,                                                                 KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, TD(DANCE_COLON),TD(DANCE_QUOTE),
+    KC_TRANSPARENT, KC_TRANSPARENT, TD(DANCE_CTRLX),KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, TD(DANCE_LGUICURLY),                       TD(DANCE_RGUICURLY), KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT,
+    KC_NO,          KC_NO,          KC_NO,          KC_TRANSPARENT, KC_TRANSPARENT,                                                                                                 KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_NO,          KC_NO,
+                                                                                                    KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT,
+                                                                                                                    KC_TRANSPARENT, KC_TRANSPARENT,
+                                                                                 KC_TRANSPARENT, KC_TRANSPARENT, TD(DANCE_CTRLALT), TD(DANCE_CTRLALT), KC_TRANSPARENT, KC_TRANSPARENT
   ),
   [LAYER_MOUSE] = LAYOUT_ergodox_pretty(
     KC_TRANSPARENT, KC_F1,          KC_F2,          KC_F3,          KC_F4,          KC_F5,          KC_TRANSPARENT,                                 KC_TRANSPARENT, KC_F6,          KC_F7,          KC_F8,          KC_F9,          KC_F10,         KC_F11,
     KC_TRANSPARENT, KC_TRANSPARENT, KC_MS_WH_UP,    KC_MS_UP,       KC_MS_WH_DOWN,  KC_TRANSPARENT, KC_MS_BTN3,                                     KC_TRANSPARENT, KC_MS_WH_LEFT,  KC_MS_WH_UP,    KC_MS_WH_DOWN,  KC_MS_WH_RIGHT, KC_TRANSPARENT, KC_F12,
     KC_TRANSPARENT, KC_TRANSPARENT, KC_MS_LEFT,     KC_MS_DOWN,     KC_MS_RIGHT,    KC_TRANSPARENT,                                                                 KC_MS_LEFT,     KC_MS_UP,       KC_MS_DOWN,     KC_MS_RIGHT,    KC_TRANSPARENT, KC_F13,
     KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT,                                 KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_F14,
-    KC_TRANSPARENT, KC_TRANSPARENT, KC_NO,          KC_MS_WH_LEFT,  KC_MS_WH_RIGHT,                                                                                                 KC_MS_WH_UP,    KC_MS_WH_DOWN,  KC_TRANSPARENT, KC_TRANSPARENT, KC_NO,
+    KC_NO,          KC_NO,          KC_NO,          KC_MS_WH_LEFT,  KC_MS_WH_RIGHT,                                                                                                 KC_MS_WH_UP,    KC_MS_WH_DOWN,  KC_NO,          KC_NO,          KC_NO,
                                                                                                     KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT,
                                                                                                                     KC_PGUP,        KC_PGDOWN,
                                                                                     KC_MS_BTN1,     KC_MS_BTN2,     KC_HOME,        KC_END,         KC_MS_BTN1,     KC_MS_BTN2
-  ),
-  [LAYER_MEDIACOLOR] = LAYOUT_ergodox_pretty(
-    KC_AUDIO_MUTE,  KC_AUDIO_VOL_UP,KC_AUDIO_VOL_DOWN,KC_BRIGHTNESS_UP,KC_BRIGHTNESS_DOWN,KC_TRANSPARENT, KC_TRANSPARENT,                           KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT,
-    KC_MEDIA_PLAY_PAUSE,KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, HSV_0_255_255,  KC_TRANSPARENT, KC_TRANSPARENT,                             KC_NO,          HSV_43_255_255, KC_TRANSPARENT, HSV_196_255_130,HSV_27_255_255, HSV_229_102_255,KC_TRANSPARENT,
-    KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, HSV_86_255_128,                                                                 KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT,
-    KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, HSV_125_255_255,HSV_215_115_238,HSV_172_255_255,KC_TRANSPARENT,                                 KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT,
-    KC_MEDIA_PREV_TRACK,KC_MEDIA_NEXT_TRACK,KC_TRANSPARENT, RGB_HUD,        RGB_HUI,                                                                                                        RGB_VAI,        RGB_VAD,        KC_TRANSPARENT, KC_TRANSPARENT, KC_NO,
-                                                                                                    RGB_MOD,        KC_TRANSPARENT, RGB_TOG,        RGB_SLD,
-                                                                                                                    KC_TRANSPARENT, KC_TRANSPARENT,
-                                                                                    KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT
-  ),
-  [LAYER_TESTING] = LAYOUT_ergodox_pretty(
-    TD(DANCE_PLUS), KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT,                                 KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, TD(DANCE_UNDERSCORE),
-    KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT,                                 KC_NO,          KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT,
-    KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT,                                                                 KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, TD(DANCE_COLON),TD(DANCE_QUOTE),
-    KC_TRANSPARENT, KC_TRANSPARENT, TD(DANCE_CTRLX),KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, TD(DANCE_LGUICURLY),                       TD(DANCE_RGUICURLY), KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT,
-    KC_TRANSPARENT, KC_TRANSPARENT, KC_NO,          KC_TRANSPARENT, KC_TRANSPARENT,                                                                                                 KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT,
-                                                                                                    KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT,
-                                                                                                                    KC_TRANSPARENT, KC_TRANSPARENT,
-                                                                                 KC_TRANSPARENT, KC_TRANSPARENT, TD(DANCE_CTRLALT), TD(DANCE_CTRLALT), KC_TRANSPARENT, KC_TRANSPARENT
   ),
   /*
   // A gergoplex-like layout, for experimentation
@@ -179,7 +206,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         disable_layer_color ^= 1;
       }
       return false;
-    case HSV_0_255_255:
+    case BL_RED:
       if (record->event.pressed) {
         #ifdef RGBLIGHT_ENABLE
           rgblight_enable();
@@ -188,7 +215,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         #endif
       }
       return false;
-    case HSV_86_255_128:
+    case BL_GREEN:
       if (record->event.pressed) {
         #ifdef RGBLIGHT_ENABLE
           rgblight_enable();
@@ -197,7 +224,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         #endif
       }
       return false;
-    case HSV_125_255_255:
+    case BL_CYAN:
       if (record->event.pressed) {
         #ifdef RGBLIGHT_ENABLE
           rgblight_enable();
@@ -206,7 +233,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         #endif
       }
       return false;
-    case HSV_215_115_238:
+    case BL_VIOLET:
       if (record->event.pressed) {
         #ifdef RGBLIGHT_ENABLE
           rgblight_enable();
@@ -215,7 +242,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         #endif
       }
       return false;
-    case HSV_172_255_255:
+    case BL_BLUE:
       if (record->event.pressed) {
         #ifdef RGBLIGHT_ENABLE
           rgblight_enable();
@@ -224,7 +251,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         #endif
       }
       return false;
-    case HSV_43_255_255:
+    case BL_YELLOW:
       if (record->event.pressed) {
         #ifdef RGBLIGHT_ENABLE
           rgblight_enable();
@@ -233,7 +260,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         #endif
       }
       return false;
-    case HSV_196_255_130:
+    case BL_INDIGO:
       if (record->event.pressed) {
         #ifdef RGBLIGHT_ENABLE
           rgblight_enable();
@@ -242,7 +269,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         #endif
       }
       return false;
-    case HSV_27_255_255:
+    case BL_ORANGE:
       if (record->event.pressed) {
         #ifdef RGBLIGHT_ENABLE
           rgblight_enable();
@@ -251,7 +278,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         #endif
       }
       return false;
-    case HSV_229_102_255:
+    case BL_PINK:
       if (record->event.pressed) {
         #ifdef RGBLIGHT_ENABLE
           rgblight_enable();
@@ -273,13 +300,20 @@ uint32_t layer_state_set_user(uint32_t state) {
     ergodox_right_led_2_off();
     ergodox_right_led_3_off();
     switch (layer) {
-      case LAYER_MOUSE:
+      case LAYER_FUNC:
         ergodox_right_led_1_on();
         break;
-      case LAYER_MEDIACOLOR:
+      case LAYER_MEDIA:
         ergodox_right_led_2_on();
         break;
-      case LAYER_TESTING:
+      case LAYER_COLOR:
+        ergodox_right_led_1_on();
+        ergodox_right_led_2_on();
+        break;
+      case LAYER_TEST:
+        ergodox_right_led_3_on();
+        break;
+      case LAYER_MOUSE:
         ergodox_right_led_1_on();
         ergodox_right_led_2_on();
         ergodox_right_led_3_on();
