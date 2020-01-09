@@ -194,6 +194,14 @@ bool disable_layer_color = 0;
 
 bool suspended = false;
 
+void rgblight_sethsv_wrap(uint8_t hue, uint8_t sat, uint8_t index) {
+  #ifdef RGBLIGHT_ENABLE
+    rgblight_enable();
+    rgblight_mode(1);
+    rgblight_sethsv(hue, sat, index);
+  #endif
+}
+
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
   switch (keycode) {
     case RGB_SLD:
@@ -208,83 +216,47 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
       return false;
     case BL_RED:
       if (record->event.pressed) {
-        #ifdef RGBLIGHT_ENABLE
-          rgblight_enable();
-          rgblight_mode(1);
-          rgblight_sethsv(0,255,255);
-        #endif
+        rgblight_sethsv_wrap(0,255,255);
       }
       return false;
     case BL_GREEN:
       if (record->event.pressed) {
-        #ifdef RGBLIGHT_ENABLE
-          rgblight_enable();
-          rgblight_mode(1);
-          rgblight_sethsv(86,255,128);
-        #endif
+        rgblight_sethsv_wrap(86,255,128);
       }
       return false;
     case BL_CYAN:
       if (record->event.pressed) {
-        #ifdef RGBLIGHT_ENABLE
-          rgblight_enable();
-          rgblight_mode(1);
-          rgblight_sethsv(125,255,255);
-        #endif
+        rgblight_sethsv_wrap(125,255,255);
       }
       return false;
     case BL_VIOLET:
       if (record->event.pressed) {
-        #ifdef RGBLIGHT_ENABLE
-          rgblight_enable();
-          rgblight_mode(1);
-          rgblight_sethsv(215,115,238);
-        #endif
+        rgblight_sethsv_wrap(215,115,238);
       }
       return false;
     case BL_BLUE:
       if (record->event.pressed) {
-        #ifdef RGBLIGHT_ENABLE
-          rgblight_enable();
-          rgblight_mode(1);
-          rgblight_sethsv(172,255,255);
-        #endif
+        rgblight_sethsv_wrap(172,255,255);
       }
       return false;
     case BL_YELLOW:
       if (record->event.pressed) {
-        #ifdef RGBLIGHT_ENABLE
-          rgblight_enable();
-          rgblight_mode(1);
-          rgblight_sethsv(43,255,255);
-        #endif
+        rgblight_sethsv_wrap(43,255,255);
       }
       return false;
     case BL_INDIGO:
       if (record->event.pressed) {
-        #ifdef RGBLIGHT_ENABLE
-          rgblight_enable();
-          rgblight_mode(1);
-          rgblight_sethsv(196,255,130);
-        #endif
+        rgblight_sethsv_wrap(196,255,130);
       }
       return false;
     case BL_ORANGE:
       if (record->event.pressed) {
-        #ifdef RGBLIGHT_ENABLE
-          rgblight_enable();
-          rgblight_mode(1);
-          rgblight_sethsv(27,255,255);
-        #endif
+        rgblight_sethsv_wrap(27,255,255);
       }
       return false;
     case BL_PINK:
       if (record->event.pressed) {
-        #ifdef RGBLIGHT_ENABLE
-          rgblight_enable();
-          rgblight_mode(1);
-          rgblight_sethsv(229,102,255);
-        #endif
+        rgblight_sethsv_wrap(229,102,255);
       }
       return false;
   }
