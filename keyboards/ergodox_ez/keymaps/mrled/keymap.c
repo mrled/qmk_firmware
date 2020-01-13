@@ -267,32 +267,6 @@ uint32_t layer_state_set_user(uint32_t state) {
 
     uint8_t layer = biton32(state);
 
-    ergodox_board_led_off();
-    ergodox_right_led_1_off();
-    ergodox_right_led_2_off();
-    ergodox_right_led_3_off();
-    switch (layer) {
-      case LAYER_FUNC:
-        ergodox_right_led_1_on();
-        break;
-      case LAYER_MEDIA:
-        ergodox_right_led_2_on();
-        break;
-      case LAYER_COLOR:
-        ergodox_right_led_1_on();
-        ergodox_right_led_2_on();
-        break;
-      case LAYER_TEST:
-        ergodox_right_led_3_on();
-        break;
-      case LAYER_MOUSE:
-        ergodox_right_led_1_on();
-        ergodox_right_led_2_on();
-        ergodox_right_led_3_on();
-        break;
-      default:
-        break;
-    }
     switch (layer) {
       case LAYER_BASE:
         if(!disable_layer_color) {
@@ -594,6 +568,22 @@ qk_tap_dance_action_t tap_dance_actions[] = {
 };
 
 
+void matrix_init_user (void) {
+    ergodox_board_led_off();
+    ergodox_right_led_1_off();
+    ergodox_right_led_2_off();
+    ergodox_right_led_3_off();
+}
+
+/* Set keyboard LEDs like the caps/scroll/num lock LEDs
+ */
+void led_set_user(uint8_t usb_led) {
+    if (usb_led & (1<<USB_LED_CAPS_LOCK)) {
+        ergodox_right_led_1_on();
+    } else {
+        ergodox_right_led_1_off();
+    }
+}
 
 /* The LEADER key for macros
  * This key works like emacs C-x prefix - you hit this key, and it supports key sequences you type next
