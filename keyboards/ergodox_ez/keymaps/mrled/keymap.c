@@ -594,9 +594,27 @@ void matrix_scan_user(void) {
   LEADER_DICTIONARY() {
     leading = false;
     leader_end();
+
+    // C X: Enable capslock
     SEQ_TWO_KEYS(KC_C, KC_X) {
       tap_code(KC_CAPSLOCK);
     }
+
+    // S X: Enable shift lock (symbols too)
+    // Disabled by just pressing the same shift again
+    /* Hmm. un/register_code() doesn't seem to like KC_LOCK
+     * I get errors like
+     * keyboards/ergodox_ez/keymaps/mrled/keymap.c:606:21: error: unsigned conversion from 'int' to 'uint8_t' {aka 'unsigned char'} changes value from '23775' to '223' [-Werror=overflow]
+     */
+    /*
+    SEQ_TWO_KEYS(KC_S, KC_X) {
+      register_code(KC_LOCK);
+      unregister_code(KC_LOCK);
+      tap_code(KC_LSHIFT);
+    }
+    */
+
+    // C A D: Ctrl-Alt-Delete
     SEQ_THREE_KEYS(KC_C, KC_A, KC_D) {
       register_code(KC_LCTRL);
       register_code(KC_LALT);
@@ -605,6 +623,8 @@ void matrix_scan_user(void) {
       unregister_code(KC_LALT);
       unregister_code(KC_LCTRL);
     }
+
+    // C A E: Ctrl-Alt-End (used in remote desktop at times)
     SEQ_THREE_KEYS(KC_C, KC_A, KC_E) {
       register_code(KC_LCTRL);
       register_code(KC_LALT);
@@ -613,6 +633,8 @@ void matrix_scan_user(void) {
       unregister_code(KC_LALT);
       unregister_code(KC_LCTRL);
     }
+
+    // C O E: Command-Option-Escape
     SEQ_THREE_KEYS(KC_C, KC_O, KC_E) {
       register_code(KC_LGUI);
       register_code(KC_LALT);
