@@ -588,31 +588,32 @@ void led_set_user(uint8_t usb_led) {
 /* The LEADER key for macros
  * This key works like emacs C-x prefix - you hit this key, and it supports key sequences you type next
  */
+
+bool leader_did_succeed;
+
 LEADER_EXTERNS();
 
 void matrix_scan_user(void) {
   LEADER_DICTIONARY() {
+    leader_did_succeed = false;
     leading = false;
     leader_end();
 
     // C X: Enable capslock
     SEQ_TWO_KEYS(KC_C, KC_X) {
       tap_code(KC_CAPSLOCK);
+      leader_did_succeed = true;
     }
 
     // S X: Enable shift lock (symbols too)
     // Disabled by just pressing the same shift again
-    /* Hmm. un/register_code() doesn't seem to like KC_LOCK
-     * I get errors like
-     * keyboards/ergodox_ez/keymaps/mrled/keymap.c:606:21: error: unsigned conversion from 'int' to 'uint8_t' {aka 'unsigned char'} changes value from '23775' to '223' [-Werror=overflow]
-     */
-    /*
+    // Hmm. Doesn't seem to actually work though.
     SEQ_TWO_KEYS(KC_S, KC_X) {
-      register_code(KC_LOCK);
-      unregister_code(KC_LOCK);
-      tap_code(KC_LSHIFT);
+      tap_code16(KC_LOCK);
+      //unregister_code16(KC_LOCK);
+      tap_code16(KC_LSHIFT);
+      leader_did_succeed = true;
     }
-    */
 
     // C A D: Ctrl-Alt-Delete
     SEQ_THREE_KEYS(KC_C, KC_A, KC_D) {
@@ -622,6 +623,7 @@ void matrix_scan_user(void) {
       unregister_code(KC_DEL);
       unregister_code(KC_LALT);
       unregister_code(KC_LCTRL);
+      leader_did_succeed = true;
     }
 
     // C A E: Ctrl-Alt-End (used in remote desktop at times)
@@ -632,6 +634,7 @@ void matrix_scan_user(void) {
       unregister_code(KC_END);
       unregister_code(KC_LALT);
       unregister_code(KC_LCTRL);
+      leader_did_succeed = true;
     }
 
     // C O E: Command-Option-Escape
@@ -642,7 +645,38 @@ void matrix_scan_user(void) {
       unregister_code(KC_ESC);
       unregister_code(KC_LALT);
       unregister_code(KC_LGUI);
+      leader_did_succeed = true;
     }
 
   }
 }
+
+void leader_start(void) {
+    ergodox_right_led_3_on();
+}
+void leader_end(void) {
+    ergodox_right_led_3_off();
+    _delay_ms(100);
+    if (leader_did_succeed) {
+        ergodox_right_led_3_on();
+        _delay_ms(100);
+        ergodox_right_led_3_off();
+        _delay_ms(100);
+        ergodox_right_led_3_on();
+        _delay_ms(100);
+        ergodox_right_led_3_off();
+        _delay_ms(100);
+        ergodox_right_led_3_off();
+    } else {
+        ergodox_right_led_2_on();
+        _delay_ms(100);
+        ergodox_right_led_2_off();
+        _delay_ms(100);
+         ergodox_right_led_2_off();
+        _delay_ms(100);
+        ergodox_right_led_2_on();
+        _delay_ms(100);
+        ergodox_right_led_2_off();
+    }
+}
+
