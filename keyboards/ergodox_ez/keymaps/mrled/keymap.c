@@ -70,18 +70,16 @@ enum {
 /* List all my layers by name */
 enum {
     LAYER_BASE = 0,
-    LAYER_FUNC = 1,
-    LAYER_MEDIA = 2,
-    LAYER_COLOR = 3,
-    LAYER_TEST = 4,
-    //LAYER_THREEROW = 5,
-    LAYER_MOUSE = 7,
+    LAYER_FUNC,
+    LAYER_COLOR,
+    LAYER_TEST,
+    LAYER_MOUSE,
 };
 
 /* Layer Layout
- * Layers 1-6 are selected in the bottom row, skipping the arrow keys
- * Layers 7+ might be selected via other keys, e.g. my mouse layer next to KC_Y
  * Take special care to only allow entering non-base layers from the base layer
+ * Take care to allow certain keys via KC_TRANSPARENT on the function layer -
+ * e.g. modifiers for alt-f4, tab might be helpful here, etc.
  */
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   [LAYER_BASE] = LAYOUT_ergodox_pretty(
@@ -89,37 +87,27 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     KC_GRAVE,       KC_Q,           KC_W,           KC_E,           KC_R,           KC_T,           KC_TAB,                                         TT(LAYER_MOUSE),KC_Y,           KC_U,           KC_I,           KC_O,           KC_P,           KC_BSLASH,
     KC_NO,          KC_A,           KC_S,           KC_D,           KC_F,           KC_G,                                                                           KC_H,           KC_J,           KC_K,           KC_L,           KC_SCLN,        KC_QUOTE,
     KC_LBRACKET,    KC_Z,           KC_X,           KC_C,           KC_V,           KC_B,           KC_LGUI,                                        KC_RGUI,        KC_N,           KC_M,           KC_COMMA,       KC_DOT,         KC_SLASH,       KC_RBRACKET,
-    TT(LAYER_FUNC),TT(LAYER_MEDIA), TT(LAYER_COLOR),KC_LEFT,        KC_RIGHT,                                                                                                       KC_UP,          KC_DOWN,        TT(LAYER_TEST), KC_NO,          KC_NO,
-                                                                                                    KC_LSPO,        KC_PGUP,        KC_HOME,        KC_RSPC,
-                                                                                                                    KC_PGDOWN,      KC_END,
+    TT(LAYER_FUNC), KC_NO,          KC_NO,          KC_LEFT,        KC_RIGHT,                                                                                                       KC_UP,          KC_DOWN,        KC_VOLD,        KC_VOLU,        KC_MUTE,
+                                                                                                    KC_DELETE	,     KC_HOME,        KC_PGUP,        KC_APPLICATION,
+                                                                                                                    KC_END,         KC_PGDOWN,
                                                                                     KC_LSHIFT,      KC_BSPACE,      KC_LCTRL,       KC_LALT,        KC_ENTER,       KC_SPACE
   ),
   [LAYER_FUNC] = LAYOUT_ergodox_pretty(
-    KC_NO,          KC_F1,          KC_F2,          KC_F3,          KC_F4,          KC_F5,          KC_TRANSPARENT,                                 TO(LAYER_BASE), KC_F6,          KC_F7,          KC_F8,          KC_F9,          KC_F10,         KC_DELETE,
-    KC_NO,          KC_F11,         KC_F12,         KC_F13,         KC_F14,         KC_F15,         KC_TRANSPARENT,                                 KC_NO,          KC_F16,         KC_F17,         KC_F18,         KC_F19,         KC_F20,         KC_INSERT,
-    KC_NO,          KC_NO,          KC_NO,          KC_NO,          KC_NO,          KC_NO,                                                                          KC_NO,          KC_NO,          KC_NO,          KC_NO,          KC_NO,          KC_PAUSE,
-    KC_APPLICATION, KC_NO,          KC_NO,          KC_NO,          KC_NO,          KC_NO,          KC_TRANSPARENT,                                 KC_TRANSPARENT, KC_NO,          KC_NO,          KC_NO,          KC_NO,          KC_NO,          KC_PSCREEN,
-    KC_TRANSPARENT, KC_NO,          KC_NO,          KC_TRANSPARENT, KC_TRANSPARENT,                                                                                                 KC_TRANSPARENT, KC_TRANSPARENT, KC_NO,          KC_NO,          KC_NO,
+    KC_PWR,         KC_F1,          KC_F2,          KC_F3,          KC_F4,          KC_F5,          KC_TRANSPARENT,                                 TO(LAYER_BASE), KC_F6,          KC_F7,          KC_F8,          KC_F9,          KC_F10,         KC_INSERT,
+    KC_NO,          KC_F11,         KC_F12,         KC_F13,         KC_F14,         KC_F15,         KC_TRANSPARENT,                                 KC_NO,          KC_F16,         KC_F17,         KC_F18,         KC_F19,         KC_F20,         KC_PAUSE,
+    TT(LAYER_TEST), KC_NO,          KC_NO,          KC_NO,          KC_NO,          KC_NO,                                                                          KC_NO,          KC_NO,          KC_NO,          KC_NO,          KC_NO,          KC_PSCREEN,
+    TT(LAYER_COLOR),KC_NO,          KC_NO,          KC_NO,          KC_NO,          KC_NO,          KC_TRANSPARENT,                                 KC_TRANSPARENT, KC_NO,          KC_NO,          KC_NO,          KC_NO,          KC_NO,          KC_NO,
+    KC_TRANSPARENT, KC_NO,          KC_MPLY,        KC_MPRV,        KC_MNXT,                                                                                                        KC_BRIU,        KC_BRID,        KC_NO,          KC_NO,          KC_MEDIA_EJECT,
                                                                                                     KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT,
                                                                                                                     KC_TRANSPARENT, KC_TRANSPARENT,
                                                                                     KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT
-  ),
-  [LAYER_MEDIA] = LAYOUT_ergodox_pretty(
-    KC_PWR,         KC_BRID,        KC_BRIU,        KC_NO,          KC_NO,          KC_NO,          KC_NO,                                          TO(LAYER_BASE), KC_NO,          KC_NO,          KC_MUTE,        KC_VOLD,        KC_VOLU,        KC_MEDIA_EJECT,
-    KC_NO,          KC_NO,          KC_NO,          KC_NO,          KC_NO,          KC_NO,          KC_NO,                                          KC_NO,          KC_NO,          KC_NO,          KC_NO,          KC_NO,          KC_NO,          KC_NO,
-    KC_NO,          KC_NO,          KC_NO,          KC_NO,          KC_NO,          KC_NO,                                                                          KC_NO,          KC_NO,          KC_NO,          KC_NO,          KC_NO,          KC_NO,
-    KC_NO,          KC_NO,          KC_NO,          KC_NO,          KC_NO,          KC_NO,          KC_NO,                                          KC_NO,          KC_NO,          KC_NO,          KC_NO,          KC_NO,          KC_NO,          KC_NO,
-    KC_NO,          KC_TRANSPARENT, KC_NO,          KC_NO,          KC_NO,                                                                                                          KC_NO,          KC_NO,          KC_NO,          KC_NO,          KC_NO,
-                                                                                                    KC_NO,          KC_NO,          KC_NO,          KC_NO,
-                                                                                                                    KC_NO,          KC_NO,
-                                                                                    KC_MPLY,        KC_NO,          KC_NO,          KC_NO,          KC_MPRV,        KC_MNXT
   ),
   [LAYER_COLOR] = LAYOUT_ergodox_pretty(
     KC_NO,          KC_NO,          KC_NO,          KC_NO,          KC_NO,          KC_NO,          KC_NO,                                          TO(LAYER_BASE), KC_NO,          KC_NO,          KC_NO,          KC_NO,          KC_NO,          KC_NO,
     KC_NO,          KC_NO,          KC_NO,          KC_NO,          BL_RED,         KC_NO,          KC_NO,                                          KC_NO,          BL_YELLOW,      KC_NO,          BL_INDIGO,      BL_ORANGE,      BL_PINK,        KC_NO,
     KC_NO,          KC_NO,          KC_NO,          KC_NO,          KC_NO,          BL_GREEN,                                                                       KC_NO,          KC_NO,          KC_NO,          KC_NO,          KC_NO,          KC_NO,
-    KC_NO,          KC_NO,          KC_NO,          BL_CYAN,        BL_VIOLET,      BL_BLUE,        KC_NO,                                          KC_NO,          KC_NO,          KC_NO,          KC_NO,          KC_NO,          KC_NO,          KC_NO,
-    KC_NO,          KC_NO,          KC_TRANSPARENT, RGB_HUD,        RGB_HUI,                                                                                                        RGB_VAI,        RGB_VAD,        KC_NO,          KC_NO,          KC_NO,
+    KC_TRANSPARENT, KC_NO,          KC_NO,          BL_CYAN,        BL_VIOLET,      BL_BLUE,        KC_NO,                                          KC_NO,          KC_NO,          KC_NO,          KC_NO,          KC_NO,          KC_NO,          KC_NO,
+    KC_NO,          KC_NO,          KC_NO,          RGB_HUD,        RGB_HUI,                                                                                                        RGB_VAI,        RGB_VAD,        KC_NO,          KC_NO,          KC_NO,
                                                                                                     RGB_MOD,        KC_NO,          RGB_TOG,        RGB_SLD,
                                                                                                                     KC_NO,          KC_NO,
                                                                                     KC_NO,          KC_NO,          KC_NO,          KC_NO,          KC_NO,          KC_NO
@@ -128,8 +116,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     TD(DANCE_PLUS), KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT,                                 TO(LAYER_BASE), KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, TD(DANCE_UNDERSCORE),
     KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT,                                 KC_NO,          KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT,
     KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT,                                                                 KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, TD(DANCE_COLON),TD(DANCE_QUOTE),
-    KC_TRANSPARENT, KC_TRANSPARENT, TD(DANCE_CTRLX),KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, TD(DANCE_LGUICURLY),                       TD(DANCE_RGUICURLY), KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT,
-    KC_NO,          KC_NO,          KC_NO,          KC_TRANSPARENT, KC_TRANSPARENT,                                                                                                 KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_NO,          KC_NO,
+    KC_NO,          KC_TRANSPARENT, TD(DANCE_CTRLX),KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, TD(DANCE_LGUICURLY),                       TD(DANCE_RGUICURLY), KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT,
+    KC_NO,          KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT,                                                                                                 KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT,
                                                                                                     KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT,
                                                                                                                     KC_TRANSPARENT, KC_TRANSPARENT,
                                                                                  KC_TRANSPARENT, KC_TRANSPARENT, TD(DANCE_CTRLALT), TD(DANCE_CTRLALT), KC_TRANSPARENT, KC_TRANSPARENT
