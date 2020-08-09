@@ -70,6 +70,7 @@ enum {
 /* List all my layers by name */
 enum {
     LAYER_BASE = 0,
+    LAYER_ARROW,
     LAYER_FUNC,
     LAYER_COLOR,
     LAYER_TEST,
@@ -85,12 +86,22 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   [LAYER_BASE] = LAYOUT_ergodox_pretty(
     KC_EQUAL,       KC_1,           KC_2,           KC_3,           KC_4,           KC_5,           KC_ESCAPE,                                      KC_LEAD,        KC_6,           KC_7,           KC_8,           KC_9,           KC_0,           KC_MINUS,
     KC_GRAVE,       KC_Q,           KC_W,           KC_E,           KC_R,           KC_T,           KC_TAB,                                         TT(LAYER_MOUSE),KC_Y,           KC_U,           KC_I,           KC_O,           KC_P,           KC_BSLASH,
-    KC_NO,          KC_A,           KC_S,           KC_D,           KC_F,           KC_G,                                                                           KC_H,           KC_J,           KC_K,           KC_L,           KC_SCLN,        KC_QUOTE,
+    KC_CAPSLOCK,    KC_A,           KC_S,           KC_D,           KC_F,           KC_G,                                                                           KC_H,           KC_J,           KC_K,           KC_L,           KC_SCLN,        KC_QUOTE,
     KC_LBRACKET,    KC_Z,           KC_X,           KC_C,           KC_V,           KC_B,           KC_LGUI,                                        KC_RGUI,        KC_N,           KC_M,           KC_COMMA,       KC_DOT,         KC_SLASH,       KC_RBRACKET,
-    TT(LAYER_FUNC), KC_NO,          KC_NO,          KC_LEFT,        KC_RIGHT,                                                                                                       KC_UP,          KC_DOWN,        KC_VOLD,        KC_VOLU,        KC_MUTE,
+    TT(LAYER_FUNC), KC_NO,          KC_NO,          TT(LAYER_ARROW),KC_LALT,                                                                                                        KC_LALT,        TT(LAYER_ARROW),KC_VOLD,        KC_VOLU,        KC_MUTE,
                                                                                                     KC_DELETE	,     KC_HOME,        KC_PGUP,        KC_APPLICATION,
                                                                                                                     KC_END,         KC_PGDOWN,
-                                                                                    KC_LSHIFT,      KC_BSPACE,      KC_LCTRL,       KC_LALT,        KC_ENTER,       KC_SPACE
+                                                                                    KC_LSHIFT,      KC_BSPACE,      KC_LCTRL,       KC_LCTRL,       KC_ENTER,       KC_SPACE
+  ),
+  [LAYER_ARROW] = LAYOUT_ergodox_pretty(
+    KC_NO,          KC_NO,          KC_NO,          KC_NO,          KC_NO,          KC_NO,          KC_TRANSPARENT,                                 TO(LAYER_BASE), KC_NO,          KC_NO,          KC_NO,          KC_NO,          KC_NO,          KC_NO,
+    KC_NO,          KC_NO,          KC_NO,          KC_UP,          KC_NO,          KC_NO,          KC_NO,                                          KC_NO,          KC_NO,          KC_NO,          KC_UP,          KC_NO,          KC_NO,          KC_NO,
+    KC_NO,          KC_NO,          KC_LEFT,        KC_DOWN,        KC_RIGHT,       KC_NO,                                                                          KC_NO,          KC_LEFT,        KC_DOWN,        KC_RIGHT,       KC_NO,          KC_NO,
+    KC_NO,          KC_NO,          KC_NO,          KC_NO,          KC_NO,          KC_NO,          KC_TRANSPARENT,                                 KC_TRANSPARENT, KC_NO,          KC_NO,          KC_NO,          KC_NO,          KC_NO,          KC_NO,
+    KC_NO,          KC_NO,          KC_NO,          KC_TRANSPARENT, KC_TRANSPARENT,                                                                                                 KC_TRANSPARENT, KC_TRANSPARENT, KC_NO,          KC_NO,          KC_NO,
+                                                                                                    KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT,
+                                                                                                                    KC_TRANSPARENT, KC_TRANSPARENT,
+                                                                                    KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT
   ),
   [LAYER_FUNC] = LAYOUT_ergodox_pretty(
     KC_PWR,         KC_F1,          KC_F2,          KC_F3,          KC_F4,          KC_F5,          KC_TRANSPARENT,                                 TO(LAYER_BASE), KC_F6,          KC_F7,          KC_F8,          KC_F9,          KC_F10,         KC_INSERT,
