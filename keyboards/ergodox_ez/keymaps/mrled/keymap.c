@@ -85,10 +85,10 @@ enum {
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   [LAYER_BASE] = LAYOUT_ergodox_pretty(
     KC_EQUAL,       KC_1,           KC_2,           KC_3,           KC_4,           KC_5,           KC_ESCAPE,                                      KC_LEAD,        KC_6,           KC_7,           KC_8,           KC_9,           KC_0,           KC_MINUS,
-    KC_GRAVE,       KC_Q,           KC_W,           KC_E,           KC_R,           KC_T,           KC_TAB,                                         TT(LAYER_MOUSE),KC_Y,           KC_U,           KC_I,           KC_O,           KC_P,           KC_BSLASH,
+    KC_GRAVE,       KC_Q,           KC_W,           KC_E,           KC_R,           KC_T,           KC_TAB,                                         MO(LAYER_MOUSE),KC_Y,           KC_U,           KC_I,           KC_O,           KC_P,           KC_BSLASH,
     KC_CAPSLOCK,    KC_A,           KC_S,           KC_D,           KC_F,           KC_G,                                                                           KC_H,           KC_J,           KC_K,           KC_L,           KC_SCLN,        KC_QUOTE,
     KC_LBRACKET,    KC_Z,           KC_X,           KC_C,           KC_V,           KC_B,           KC_LGUI,                                        KC_RGUI,        KC_N,           KC_M,           KC_COMMA,       KC_DOT,         KC_SLASH,       KC_RBRACKET,
-    TT(LAYER_FUNC), KC_NO,          KC_NO,          TT(LAYER_ARROW),KC_LALT,                                                                                                        KC_LALT,        TT(LAYER_ARROW),KC_VOLD,        KC_VOLU,        KC_MUTE,
+    MO(LAYER_FUNC), KC_NO,          KC_NO,          MO(LAYER_ARROW),KC_LALT,                                                                                                        KC_LALT,        MO(LAYER_ARROW),KC_VOLD,        KC_VOLU,        KC_MUTE,
                                                                                                     KC_DELETE	,     KC_HOME,        KC_PGUP,        KC_APPLICATION,
                                                                                                                     KC_END,         KC_PGDOWN,
                                                                                     KC_LSHIFT,      KC_BSPACE,      KC_LCTRL,       KC_LCTRL,       KC_ENTER,       KC_SPACE
@@ -138,7 +138,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     KC_NO,          KC_NO,          KC_NO,          KC_NO,          KC_NO,          KC_NO,          KC_TRANSPARENT,                                 TO(LAYER_BASE), KC_NO,          KC_NO,          KC_NO,          KC_NO,          KC_NO,          KC_NO,
     KC_NO,          KC_NO,          KC_MS_WH_UP,    KC_MS_UP,       KC_MS_WH_DOWN,  KC_NO,          KC_MS_BTN3,                                     KC_TRANSPARENT, KC_MS_WH_LEFT,  KC_MS_WH_UP,    KC_MS_WH_DOWN,  KC_MS_WH_RIGHT, KC_NO,          KC_NO,
     KC_NO,          KC_NO,          KC_MS_LEFT,     KC_MS_DOWN,     KC_MS_RIGHT,    KC_NO,                                                                          KC_MS_LEFT,     KC_MS_UP,       KC_MS_DOWN,     KC_MS_RIGHT,    KC_NO,          KC_NO,
-    KC_NO,          KC_NO,          KC_NO,          KC_NO,          KC_NO,          KC_NO,          KC_NO,                                          KC_NO,          KC_NO,          KC_NO,          KC_NO,          KC_NO,          KC_NO,          KC_NO,
+    KC_NO,          KC_NO,          KC_NO,          KC_NO,          KC_NO,          KC_NO,          KC_NO,                                          TG(LAYER_MOUSE),KC_NO,          KC_NO,          KC_NO,          KC_NO,          KC_NO,          KC_NO,
     KC_NO,          KC_NO,          KC_NO,          KC_MS_WH_LEFT,  KC_MS_WH_RIGHT,                                                                                                 KC_MS_WH_UP,    KC_MS_WH_DOWN,  KC_NO,          KC_NO,          KC_NO,
                                                                                                     KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT,
                                                                                                                     KC_TRANSPARENT, KC_TRANSPARENT,
@@ -273,6 +273,20 @@ uint32_t layer_state_set_user(uint32_t state) {
           rgblight_enable_noeeprom();
           rgblight_mode_noeeprom(1);
           rgblight_sethsv_noeeprom(194,255,255);
+        }
+        break;
+      case LAYER_FUNC:
+        if(!disable_layer_color) {
+          rgblight_enable_noeeprom();
+          rgblight_mode_noeeprom(1);
+          rgblight_sethsv_noeeprom(0,255,255);
+        }
+        break;
+      case LAYER_ARROW:
+        if(!disable_layer_color) {
+          rgblight_enable_noeeprom();
+          rgblight_mode_noeeprom(1);
+          rgblight_sethsv_noeeprom(HSV_BLUE);
         }
         break;
       case LAYER_MOUSE:
